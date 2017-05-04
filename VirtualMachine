@@ -10,7 +10,7 @@ class VM {
     var currentInstruction : Instruction
     
     enum Instruction: Int {
-        case halt, clrr, clrx, clrm, clrb, movir, movrr, movrm, movmr, movxr, movar, movb, addir, addmr, addxr, subir, subrr, submr, subxr, mulir, mulrr, mulmr, mulxr, divir, divrr, divmr, divxr, jmp, sojz, sojnz, aojz, aojnz, cmpir, cmprr, cmpmr, jmpn, jmpz, jmpp, jsr, ret, push, pop, stackc, outci, outcr, outcx, outcb, readi, printi, readc, readln, brk, movrx, movxx, outs, nop, jmpne
+        case halt, clrr, clrx, clrm, clrb, movir, movrr, movrm, movmr, movxr, movar, movb, addir, addrr, addmr, addxr, subir, subrr, submr, subxr, mulir, mulrr, mulmr, mulxr, divir, divrr, divmr, divxr, jmp, sojz, sojnz, aojz, aojnz, cmpir, cmprr, cmpmr, jmpn, jmpz, jmpp, jsr, ret, push, pop, stackc, outci, outcr, outcx, outcb, readi, printi, readc, readln, brk, movrx, movxx, outs, nop, jmpne
     }
     
     init(input: [Int], labels: [(String, Int)]) {
@@ -60,6 +60,9 @@ class VM {
             registers[getParameter(2)] += getParameter(1)
             currentIndex += 3
         case .addmr: print("Nothing yet!")
+        case .addrr:
+            registers[getParameter(1)] += getParameter(2)
+            currentIndex += 3
         case .addxr: print("Nothing yet!")
         case .subir: print("Nothing yet!")
         case .subrr: print("Nothing yet!")
@@ -75,7 +78,9 @@ class VM {
         case .aojz: print("Nothing yet!")
         case .aojnz: print("Nothing yet!")
         case .cmpir: print("Nothing yet!")
-        case .cmprr: print("Nothing yet!")
+        case .cmprr:
+            registers[getParameter(1)] -= getParameter(2)
+            currentIndex += 3
         case .cmpmr: print("Nothing yet!")
         case .jmpn: print("Nothing yet!")
         case .jmpz: print("Nothing yet!")
@@ -87,15 +92,27 @@ class VM {
         case .stackc: print("Nothing yet!")
         case .outci: print("Nothing yet!")
         case .outcx: print("Nothing yet!")
+        case .outcr:
+            print(AsciiToChar(registers[getParameter(1)]))
+            currentIndex += 2
         case .outcb: print("Nothing yet!")
         case .readi: print("Nothing yet!")
-        case .printi: print("Nothing yet!")
+        case .printi:
+            print(registers[getParameter(1)])
+            currentIndex += 2
         case .readc: print("Nothing yet!")
         case .readln: print("Nothing yet!")
         case .brk: print("Nothing yet!")
         case .movrx: print("Nothing yet!")
         case .movrr: print("Nothing yet!")
-        case .outs: print("Nothing yet!")
+        case .outs:
+            let labelLocation = symbolTable[getParameter(1)].1
+            let stringLength = memory[labelLocation]
+            var string = ""
+            for i in labelLocation + 1...stringLength {
+                string += String(AsciiToChar(memory[i]))
+            }
+            print(string)
         case .nop: print("Nothing yet!")
         case .jmpne: print("Nothing yet!")
         default: print("Instruction not recognized")
@@ -103,3 +120,4 @@ class VM {
     }
     
 }
+
