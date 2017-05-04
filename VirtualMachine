@@ -1,0 +1,105 @@
+import Foundation
+
+class VM {
+    
+    var memory = [Int](repeating: 0, count: 2000)
+    var registers = [Int](repeating: 0, count: 10)
+    var symbolTable = [(String, Int)]()
+    
+    var currentIndex : Int
+    var currentInstruction : Instruction
+    
+    enum Instruction: Int {
+        case halt, clrr, clrx, clrm, clrb, movir, movrr, movrm, movmr, movxr, movar, movb, addir, addmr, addxr, subir, subrr, submr, subxr, mulir, mulrr, mulmr, mulxr, divir, divrr, divmr, divxr, jmp, sojz, sojnz, aojz, aojnz, cmpir, cmprr, cmpmr, jmpn, jmpz, jmpp, jsr, ret, push, pop, stackc, outci, outcr, outcx, outcb, readi, printi, readc, readln, brk, movrx, movxx, outs, nop, jmpne
+    }
+    
+    init(input: [Int], labels: [(String, Int)]) {
+        let memorySpace = input[0]
+        if memorySpace < 2000  {
+            memory = [Int](repeating: 0, count: memorySpace + 100)
+        }
+        
+        for i in 0..<input.count - 2 {
+            memory[i] = input[i + 2]
+        }
+        
+        currentIndex = input[1]
+        currentInstruction = Instruction(rawValue: memory[currentIndex])!
+        symbolTable = labels
+    }
+    
+    func run() {
+        while currentInstruction != Instruction.halt {
+            execute()
+            currentInstruction = Instruction(rawValue: memory[currentIndex])!
+        }
+        print(registers)
+    }
+    
+    func getParameter(_ parameterNumber: Int) -> Int {
+        return memory[currentIndex + parameterNumber]
+    }
+    
+    func execute() {
+        print(currentInstruction)
+        switch currentInstruction {
+        case .clrr: print("Nothing yet!")
+        case .clrx: print("Nothing yet!")
+        case .clrm: print("Nothing yet!")
+        case .clrb: print("Nothing yet!")
+        case .movir: print("Nothing yet!")
+        case .movrm: print("Nothing yet!")
+        case .movmr:
+            let labelLocation = symbolTable[getParameter(1)].1
+            registers[getParameter(2)] = memory[labelLocation]
+            currentIndex += 3
+        case .movxr: print("Nothing yet!")
+        case .movar: print("Nothing yet!")
+        case .movb: print("Nothing yet!")
+        case .addir:
+            registers[getParameter(2)] += getParameter(1)
+            currentIndex += 3
+        case .addmr: print("Nothing yet!")
+        case .addxr: print("Nothing yet!")
+        case .subir: print("Nothing yet!")
+        case .subrr: print("Nothing yet!")
+        case .submr: print("Nothing yet!")
+        case .mulir: print("Nothing yet!")
+        case .mulxr: print("Nothing yet!")
+        case .divir: print("Nothing yet!")
+        case .divrr: print("Nothing yet!")
+        case .divxr: print("Nothing yet!")
+        case .jmp: print("Nothing yet!")
+        case .sojz: print("Nothing yet!")
+        case .sojnz: print("Nothing yet!")
+        case .aojz: print("Nothing yet!")
+        case .aojnz: print("Nothing yet!")
+        case .cmpir: print("Nothing yet!")
+        case .cmprr: print("Nothing yet!")
+        case .cmpmr: print("Nothing yet!")
+        case .jmpn: print("Nothing yet!")
+        case .jmpz: print("Nothing yet!")
+        case .jmpp: print("Nothing yet!")
+        case .jsr: print("Nothing yet!")
+        case .ret: print("Nothing yet!")
+        case .push: print("Nothing yet!")
+        case .pop: print("Nothing yet!")
+        case .stackc: print("Nothing yet!")
+        case .outci: print("Nothing yet!")
+        case .outcx: print("Nothing yet!")
+        case .outcb: print("Nothing yet!")
+        case .readi: print("Nothing yet!")
+        case .printi: print("Nothing yet!")
+        case .readc: print("Nothing yet!")
+        case .readln: print("Nothing yet!")
+        case .brk: print("Nothing yet!")
+        case .movrx: print("Nothing yet!")
+        case .movrr: print("Nothing yet!")
+        case .outs: print("Nothing yet!")
+        case .nop: print("Nothing yet!")
+        case .jmpne: print("Nothing yet!")
+        default: print("Instruction not recognized")
+        }
+    }
+    
+}
