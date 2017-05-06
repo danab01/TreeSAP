@@ -1,0 +1,35 @@
+import Foundation
+
+class VM {
+    
+    var memory : [Int]
+    var executingIndex: Int
+    var registers = [Int?](repeating: nil, count: 10)
+    
+    init(numbers: [Int]){
+        executingIndex = numbers[1]
+        memory = [Int](repeating: 0, count: numbers[0])
+        for i in 0..<memory.count{
+            memory[i] = numbers[i+2]
+        }
+    }
+    
+    enum Instruction: Int{
+        case halt, clrr, clrx, clrm, clrb, movir, movrr, movrm, movmr, movxr, movar, movb, addir, addmr, addxr, subir, subrr, submr, subxr, mulir, mulrr, mulmr, mulxr, divir, divrr, divmr, divxr, jmp, sojz, sonjz, aojz, aojnz, cmpir, cmprr, cmpmr, jmpn, jmpz, jmpp, jsr, ret, push, pop, stackc, outci, outcr, outcx, outcb, readi, printi, readc, readln, brk, movrx, movxx, outs, nop, jmpne
+    }
+    
+    func execute (_ number: Instruction) {
+        switch number {
+            case .halt:
+        }
+    }
+    
+    func readMemory() {
+        for i in executingIndex..<memory.count {
+            let instr: Instruction = Instruction(rawValue: memory[i])!
+            execute(instr)
+        }
+    }
+    
+}
+
